@@ -1,0 +1,17 @@
+fluentd-forwarding:
+  build: ./fluentd-forwarding
+  #creo que reinicia el container en caso de caida una y otra vez, sin limite
+  #equivalente al parametro --restart de docker run
+  #otros valores: no, on-failure[:max-retries] y unless-stopped
+  restart: always
+  volumes:
+    - ./fluentd-forwarding/volumes/etc:/fluentd/etc
+  environment:
+    - FLUENTD_CONF=cloudopting.conf
+#    - FLUENTD_OPT=<command line options>
+  container_name: fluentd-forwarding
+  # net: "host" permite al container que utilice la red del equipo y no la de docker engine
+  # de esta forma, los puertos que utilicemos en el container son los del mismo host
+  # pero ojo, esto no podremos visualizarlo con docker ps
+  net: "host"
+  ## exposes 24223
