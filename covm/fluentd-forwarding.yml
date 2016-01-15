@@ -1,0 +1,21 @@
+# You need to have the certificates previously generated
+# You need deploy fluentd-forwarding.yml before that application.yml
+
+fluentd-forwarding:
+  image: default/fforwarding
+  restart: always
+  volumes:
+    # Replace with path to certs in CloudOpting machine:/fluentd/certs
+    - /var/lib/emulatedhost/certs:/fluentd/certs
+  environment:
+    - FLUENTD_CONF=cloudopting.conf
+  container_name: fluentd-forwarding
+  hostname: fluentd-forwarding
+  ports:
+    - "24223:24223"
+    - "80:80"
+    - "8080:8080"
+  # Replace with coco:Real Cloudoptingmachine IP
+  extra_hosts:
+    # Emulated CloudOpting manager IP: docker inspect --format '{{ .NetworkSettings.Networks.bridge.IPAddress }}' coco
+    - "coco:172.17.0.2" 

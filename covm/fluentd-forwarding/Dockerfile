@@ -1,4 +1,8 @@
-FROM ubuntu:14.04
+# FROM ubuntu:14.04
+# We use cloudoting/ubuntubase:14.04 because this image include puppet
+
+FROM cloudopting/ubuntubase:14.04
+
 MAINTAINER TAGOMORI Satoshi <tagomoris@gmail.com>
 LABEL Description="Fluentd docker image" Vendor="Fluent Organization" Version="1.0"
 
@@ -40,9 +44,9 @@ RUN gem install fluentd -v 0.12.16
 
 RUN gem install fluent-plugin-secure-forward fluent-plugin-elasticsearch fluent-plugin-burrow fluent-plugin-grep
 
-COPY fluent.conf /fluentd/etc/
-ONBUILD COPY fluent.conf /fluentd/etc/
-ONBUILD COPY plugins /fluentd/plugins/
+#COPY fluent.conf /fluentd/etc/
+#ONBUILD COPY fluent.conf /fluentd/etc/
+#ONBUILD COPY plugins /fluentd/plugins/
 
 WORKDIR /home/ubuntu
 
@@ -50,6 +54,19 @@ ENV FLUENTD_OPT=""
 ENV FLUENTD_CONF="fluent.conf"
 
 EXPOSE 24223
+
+# you don't need modules for this manifest: 
+# Add puppet modules:
+#ADD ./modules /tmp/modules
+
+# Add manifest to apply
+ADD ./manifest.pp /tmp/manifest.pp
+
+# Apply manifest
+#RUN puppet apply --modulepath=/tmp/modules /tmp/manifest.pp
+# you don't need modules for this manifest: 
+
+RUN puppet apply /tmp/manifest.pp
 
 ### docker run -p 24224 -v `pwd`/log: -v `pwd`/log:/home/ubuntu/log fluent/fluentd:latest
 CMD exec fluentd -c /fluentd/etc/$FLUENTD_CONF -p /fluentd/plugins $FLUENTD_OPT

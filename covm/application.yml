@@ -1,0 +1,22 @@
+# First deploy fluentd-forwarding
+
+apache:
+  # Format: image: group/imageName
+  image: default/apache
+  container_name: apache
+  # You need deploy fluentd-forwarding before
+  net: "container:fluentd-forwarding"
+  log_driver: "fluentd"
+  log_opt:
+    fluentd-address: "localhost:24223"
+    fluentd-tag: "docker.apache.{{.Name}}.{{.ID}}"
+
+tomcat:
+  image: default/tomcat
+  container_name: tomcat
+  # You need deploy fluentd-forwarding before
+  net: "container:fluentd-forwarding"
+  log_driver: "fluentd"
+  log_opt:
+    fluentd-address: "localhost:24223"
+    fluentd-tag: "docker.tomcat.{{.Name}}.{{.ID}}"

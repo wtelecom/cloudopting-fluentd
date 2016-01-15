@@ -1,0 +1,14 @@
+# Emulate CloudOpting machine
+coco:
+  extends:
+   file: ./emulatedhost/compose.yml
+   service: emulatedhost
+  container_name: coco
+  hostname: coco
+  ports:
+    - "5601:5601"
+# I think that it's no necesary to expose this port
+    - "24224:24224"    
+  volumes:
+    - ./coco:/home/coco/compose
+    - ./certs:/home/coco/certs
