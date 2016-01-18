@@ -6,7 +6,7 @@ file { '/fluentd/etc/cloudopting.conf':
 <source>
   type forward
   port 24223
-  bind fluentd-forwarding
+  bind 0.0.0.0
 </source>
 
 <match **>
@@ -20,7 +20,7 @@ file { '/fluentd/etc/cloudopting.conf':
 
   <server>
     name fluentd
-    host coco
+    host CloudOpting
     port 24224
     weight 60
   </server>

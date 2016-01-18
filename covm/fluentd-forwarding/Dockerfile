@@ -60,7 +60,7 @@ EXPOSE 24223
 #ADD ./modules /tmp/modules
 
 # Add manifest to apply
-ADD ./manifest.pp /tmp/manifest.pp
+ADD ./fforwarding.pp /tmp/manifest.pp
 
 # Apply manifest
 #RUN puppet apply --modulepath=/tmp/modules /tmp/manifest.pp
@@ -69,4 +69,10 @@ ADD ./manifest.pp /tmp/manifest.pp
 RUN puppet apply /tmp/manifest.pp
 
 ### docker run -p 24224 -v `pwd`/log: -v `pwd`/log:/home/ubuntu/log fluent/fluentd:latest
-CMD exec fluentd -c /fluentd/etc/$FLUENTD_CONF -p /fluentd/plugins $FLUENTD_OPT
+#CMD exec fluentd -c /fluentd/etc/$FLUENTD_CONF -p /fluentd/plugins $FLUENTD_OPT
+
+USER root
+
+#CMD echo $(cat /etc/hosts | grep fluentd-forwarding) >> /fluentd/vm/hosts && exec fluentd -c /fluentd/etc/$FLUENTD_CONF -p /fluentd/plugins $FLUENTD_OPT
+
+CMD echo $(cat /fluentd/vm/hosts | grep CloudOpting) >> /etc/hosts && echo $(cat /etc/hosts | grep fluentd-forwarding) >> /fluentd/vm/hosts && exec fluentd -c /fluentd/etc/$FLUENTD_CONF -p /fluentd/plugins $FLUENTD_OPT

@@ -5,18 +5,20 @@ apache:
   image: default/apache
   container_name: apache
   # You need deploy fluentd-forwarding before
-  net: "container:fluentd-forwarding"
+  ports:
+    - "80:80"
   log_driver: "fluentd"
   log_opt:
-    fluentd-address: "localhost:24223"
+    fluentd-address: "fluentd-forwarding:24223"
     fluentd-tag: "docker.apache.{{.Name}}.{{.ID}}"
 
 tomcat:
   image: default/tomcat
   container_name: tomcat
   # You need deploy fluentd-forwarding before
-  net: "container:fluentd-forwarding"
+  ports:
+    - "8080:8080"
   log_driver: "fluentd"
   log_opt:
-    fluentd-address: "localhost:24223"
+    fluentd-address: "fluentd-forwarding:24223"
     fluentd-tag: "docker.tomcat.{{.Name}}.{{.ID}}"
