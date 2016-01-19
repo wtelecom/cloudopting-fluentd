@@ -9,6 +9,7 @@ coco is a container that emulates the cloudopting machine
     docker-compose -f monitor.yml
 monitor.yml deploys three containers into coco, fluentd (port 24224), elasticsearch and kibana (port 5601)
 fluentd uses a ssl connection
+**Note:** You can add filters in coco/fluentd/volumes/etc/filters. At this moment exist 2 filters (apache.conf and tomcat.conf)
 ###3) Add coco IP to /etc/host in emulatedhost container
 You can know this IP if you typing the command:
 
