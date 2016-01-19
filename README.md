@@ -63,8 +63,12 @@ add in service emulatedhost in development.yml file:
 **Note:** First you must deploy fluentd-forwarding.yml
 ##Use
 **_Apache:_** you can access to Apache in localhost:80
+
 **_Tomcat:_** you can accesee to Tomcat in localhost:8080
-**_Kibana:_** you can access to Kibana in localhost:5601. In settings use pattern fluentd-*
+
+**_Kibana:_** you can access to Kibana in localhost:5601. In settings use pattern
+fluentd-*
+
 ![settings](resources/kibana-settings.png)
 ![discover](resources/kibana-discover.png)
 ##Real case considerations
@@ -83,3 +87,6 @@ add in service emulatedhost in development.yml file:
 ######4) fluentd-forwarding.yml:
 
     Replace host certificates path
+##TODO
+Now, fluentd-forwarding container mounts /etc of VM like volumen because he needs the cloudopting machine ip and vm needs the fluentd-forwarding ip. But this isn't secure.
+In the future, this exchange must do it cloudopting manager.
